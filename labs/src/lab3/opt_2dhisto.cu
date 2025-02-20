@@ -6,6 +6,27 @@
 #include "util.h"
 #include "ref_2dhisto.h"
 
+void allocate_memory_on_device_32(uint32_t* address, size_t size)
+{
+    cudamalloc(&address, size);
+}
+
+void allocate_memory_on_device_8(uint8_t* address, size_t size)
+{
+    cudamalloc(&address, size);
+}
+
+void copy_memory_to_device_32(uint32_t* devicePtr, uint32_t* hostPtr, size_t size)
+{
+    cudamemcpy(devicePtr, hostPtr, size, cudaMemcpyHostToDevice);
+}
+
+void copy_memory_to_device_8(uint8_t* devicePtr, uint8_t* hostPtr, size_t size)
+{
+    cudamemcpy(devicePtr, hostPtr, size, cudaMemcpyHostToDevice);
+}
+
+
 void opt_2dhisto( uint32_t** input, uint8_t* bins, int dataN, int width_input, int height_input, int dim_grid, int dim_block)
 {
     /* This function should only contain a call to the GPU 

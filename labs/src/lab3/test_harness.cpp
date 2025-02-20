@@ -89,14 +89,27 @@ int main(int argc, char* argv[])
 
     /* Include your setup code below (temp variables, function calls, etc.) */
     
+    // do memory allocation
+
     int dataN = INPUT_HEIGHT * INPUT_WIDTH;
     
     uint8_t *d_kernel_bins;
-    cudaMalloc((void**)&d_kernel_bins, HISTO_HEIGHT * HISTO_WIDTH * sizeof(uint8_t));
-    uint32_t **d_input;
-    cudaMalloc((void**)&d_input, rows * sizeof(uint32_t*));
+    
+    size_t input_width_padded_to_32 = (INPUT_WIDTH + 128) & ~127;
+    uint32_t *input_start = input[0];
+    uint32_t *d_input;
 
-   // Copy both to device
+    size_t histogram_size = HISTO_HEIGHT*HISTO_WIDTH*sizeof(uint8_t);
+    allocate_memory_on_device_8(d_kernel_bins, histogram_size);
+    allocate_memory_on_device_32(d_input, input_width_padded_to_32*INPUT_HEIGHT*sizeof(uint32_t));
+
+    // copy them over
+    copy_memory_to_device_8(d_kernel_bins, kernel_bins, histogram_size);
+    copy_memory_to_device_32(d_input, input_start, input_width_padded_to_32*INPUT_HEIGHT*sizeof(uint32_t));
+
+    // setup execution parameters
+
+   
     
 
 
