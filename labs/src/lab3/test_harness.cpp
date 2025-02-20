@@ -108,7 +108,17 @@ int main(int argc, char* argv[])
     copy_memory_to_device_32(d_input, input_start, input_width_padded_to_32*INPUT_HEIGHT*sizeof(uint32_t));
 
     // setup execution parameters
+    // we don't want to read padding, that means our block should have as many threads as will be enugh for INPUT_WİDTH
 
+    int blockX = 16;  // try this setup first because it allows us to get rid of if statements in the code
+    int blockY = 32;    // no coalescing unless each block does multiple reads because of block dim
+                    // but we also don't want 200-something blocks
+                    // how many boxes should each thread cover?
+
+    
+
+    dim3 dim_block(blockX, blockY);
+    dim3 dim_grid(249, 1); // block goes down 128 times?
    
     
 
