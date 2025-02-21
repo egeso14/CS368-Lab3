@@ -110,21 +110,21 @@ int main(int argc, char* argv[])
     // setup execution parameters
     // we don't want to read padding, that means our block should have as many threads as will be enugh for INPUT_WİDTH
 
-    int blockX = 16;  // try this setup first because it allows us to get rid of if statements in the code
+    int blockX = 32;  // try this setup first because it allows us to get rid of if statements in the code
     int blockY = 32;    // no coalescing unless each block does multiple reads because of block dim
                     // but we also don't want 200-something blocks
                     // how many boxes should each thread cover?
 
-    
+    dim_grid_x = 128;
+    dim_grid_y = 128;
 
-    dim3 dim_block(blockX, blockY);
-    dim3 dim_grid(249, 1); // block goes down 128 times?
+
+
+    
    
     
 
-
-
-    uint32_t** input, uint8_t* bins, int dataN, int width_input, int height_input, int dim_grid, int dim_block
+    opt_2dhisto(d_input, d_kernel_bins, input_width_padded_to_32, INPUT_HEIGHT, dim_grid_x, dim_grid_y, blockX, blockY);
     
 
     /* End of setup code */
